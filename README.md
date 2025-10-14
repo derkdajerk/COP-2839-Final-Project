@@ -15,7 +15,7 @@
 | **13** | **Diagnostics** | Add `/healthz` endpoint | Provide clear feedback during runtime and system status. | -Custom error pages <br><br> -`/healthz` endpoint returns app status | Code pushed to GitHub with README section written; Screenshots of error and `/healthz` pages. | Test `/healthz` endpoint to ensure it returns healthy/unhealthy status. |
 | **14** | **Logging** | Use ILogger to log every action a user completes | Capture detailed app events and errors for monitoring and debugging. | -Logs include key info like action and timestamp <br><br> -Log file written to local storage/console | Code pushed to GitHub with README section written; Screenshot of a log in console | Trigger actions and verify logs are written correctly. Intentionally cause validation errors to confirm error logs appear. |
 | **15** | **Stored Procedures** | Stored procedures for workout summaries | Show list of most often days worked out, most hit workout, consistency of workouts.| -Stored procedure created and executed <br><br> -Summary data displayed | Code pushed to GitHub with README section written; Screenshots of SQL and dashboard output. | Execute stored procedure and confirm results manually. |
-
+| **16** | **Deployment** | Deploy app to Azure App Service | Make the application accessible in the cloud with production settings. | -App Service created <br><br> -App builds and runs on Azure <br><br> -`/healthz` is reachable <br><br> -One functional path works | Code pushed to GitHub with README section written; Deployed URL; Screenshots of working site with URL| Visit public URL; confirm health endpoint and one page load |
 ---
 
 
