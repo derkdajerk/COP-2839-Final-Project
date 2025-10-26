@@ -5,22 +5,27 @@
 
 ---
 
+To run this app you must clone this repository locally(via url/git), install all dependencies needed (Web App Development in Visual Studio Installer)
+
+Open the solution file in Visual Studio Community.
+
+Then build the solution (Ctrl + Shift + B), and then run with or without debug (F5 or Shift + F5).
+
 ## Project Planning Table
 
 | Week | Concept | Feature | Goal | Done Criteria | Evidence / Documentation | Testing Plan |
 |----|--------------|--------------|------------------------|-----|-------------------------------|------------------|
-| **10** | **Modeling** | Create database models for Workouts, and Exercises | Define and store the core data of the app to represent workouts and user logs. | -Models created for Workout, and Exercise <br><br> -Relationships defined (one-to-many, etc.) <br><br> -Workout table created | Code pushed to GitHub with README section written; | Run migration; verify database tables were created correctly |
+| **10** | **Modeling** | Create database models for Workouts | Define and store the core data of the app to represent workouts and user logs. | -Models created for Workout <br><br> -Relationships defined (one-to-many, etc.) <br><br> -Workout table created | Code pushed to GitHub with README section written; | Run migration; verify database tables were created correctly |
 | **11** | **Separation of Concerns / Dependency Injection** | Implement service layer for workout management | Separate data access logic from controllers, implement service classes and methods to work with data. | -Services created for Workout operations <br><br> -Controllers use constructor injection <br><br> -No direct DbContext access in controllers | Code pushed to GitHub with README section written;| Unit test service methods |
-| **12** | **CRUD** | Create, Read, Update, and Delete functionality for Workouts | Allow users to manage workout entries through full CRUD operations. | -Views and controllers for all CRUD operations <br><br> -Validation/Error messages upon submission | Code pushed to GitHub with README section written; Screenshots of CRUD pages | Manually test/confirm all CRUD operations update DB accordingly. Use integration tests (if i can get them to work) |
+| **12** | **CRUD** | Create, Read, Update, and Delete functionality for Workouts | Allow users to manage workout entries through full CRUD operations. | -Views and controllers for all CRUD operations <br><br>-Validation & Error messages upon submission | Code pushed to GitHub with README section written; Screenshots of CRUD pages | Manually test/confirm all CRUD operations update DB accordingly. Use integration tests (if i can get them to work) |
 | **13** | **Diagnostics** | Add `/healthz` endpoint | Provide clear feedback during runtime and system status. | -Custom error pages <br><br> -`/healthz` endpoint returns app status | Code pushed to GitHub with README section written; Screenshots of error and `/healthz` pages. | Test `/healthz` endpoint to ensure it returns healthy/unhealthy status. |
 | **14** | **Logging** | Use ILogger to log every action a user completes | Capture detailed app events and errors for monitoring and debugging. | -Logs include key info like action and timestamp <br><br> -Log file written to local storage/console | Code pushed to GitHub with README section written; Screenshot of a log in console | Trigger actions and verify logs are written correctly. Intentionally cause validation errors to confirm error logs appear. |
 | **15** | **Stored Procedures** | Stored procedures for workout summaries | Show list of most often days worked out, most hit workout, consistency of workouts.| -Stored procedure created and executed <br><br> -Summary data displayed | Code pushed to GitHub with README section written; Screenshots of SQL and dashboard output. | Execute stored procedure and confirm results manually. |
 | **16** | **Deployment** | Deploy app to Azure App Service | Make the application accessible in the cloud with production settings. | -App Service created <br><br> -App builds and runs on Azure <br><br> -`/healthz` is reachable <br><br> -One functional path works | Code pushed to GitHub with README section written; Deployed URL; Screenshots of working site with URL| Visit public URL; confirm health endpoint and one page load |
 ---
 
+## Week 10 - Modeling
+For Week 10, I focused on implementing the foundational data modeling feature for my Workout Log Tracker. The primary goal was to define the core data structure that will support all future features, ensuring a solid and extensible base for the project. I began by creating a new ASP.NET Core Razor Pages project in Visual Studio. This provided a clean starting point and ensured compatibility with the latest .NET 9 features. Next, I designed and implemented the `Workout` entity class. This model includes essential properties such as `Id`, `Name`, `Description`, `MuscleGroup`, `Length`, and `Date`. These fields were chosen to capture the key details of each workout, allowing for future expansion (e.g., linking exercises or tracking user progress). With the model and context in place, I created an initial migration using the Entity Framework Core tools. This migration generated the necessary SQL to create the `Workout` table in the database, reflecting the structure defined in the model. I then applied the migration and updated the database, which successfully created the table. To verify the setup, I ran the application and confirmed that the database was created with the correct schema. I also checked that the application could interact with the database, ensuring that the groundwork for CRUD operations is ready for future development.
 
-To run this app you must clone this repository locally(via url/git), install all dependencies needed (Web App Development in Visual Studio Installer)
 
-Open the solution file in Visual Studio Community.
 
-Then build the solution (Ctrl + Shift + B), and then run with or without debug (F5 or Shift + F5).
