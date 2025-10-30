@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Workout_Log_Tracker_Trauner.Data;
+using System.Threading.Tasks;
 using Workout_Log_Tracker_Trauner.Models;
+using Workout_Log_Tracker_Trauner.Services;
 
 namespace Workout_Log_Tracker_Trauner.Pages.Workouts
 {
     public class DeleteModel : PageModel
     {
-        private readonly Workout_Log_Tracker_Trauner.Data.Workout_Log_Tracker_TraunerContext _context;
+        private readonly WorkoutService _workoutService;
 
-        public DeleteModel(Workout_Log_Tracker_Trauner.Data.Workout_Log_Tracker_TraunerContext context)
+        public DeleteModel(WorkoutService workoutService)
         {
-            _context = context;
+            _workoutService = workoutService;
         }
 
         [BindProperty]
@@ -29,16 +25,14 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
                 return NotFound();
             }
 
-            var workout = await _context.Workout.FirstOrDefaultAsync(m => m.Id == id);
-
-            if (workout is not null)
+            var workout = await _workoutService.GetWorkoutByIdAsync(id.Value);
+            if (workout == null)
             {
-                Workout = workout;
-
-                return Page();
+                return NotFound();
             }
 
-            return NotFound();
+            Workout = workout;
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
@@ -48,12 +42,10 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
                 return NotFound();
             }
 
-            var workout = await _context.Workout.FindAsync(id);
+            var workout = await _workoutService.GetWorkoutByIdAsync(id.Value);
             if (workout != null)
             {
-                Workout = workout;
-                _context.Workout.Remove(Workout);
-                await _context.SaveChangesAsync();
+                await _workoutService.DeleteWorkoutAsync(workout);
             }
 
             return RedirectToPage("./Index");

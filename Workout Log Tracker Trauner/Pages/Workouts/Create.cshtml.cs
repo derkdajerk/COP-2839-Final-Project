@@ -1,22 +1,23 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Workout_Log_Tracker_Trauner.Data;
 using Workout_Log_Tracker_Trauner.Models;
+using Workout_Log_Tracker_Trauner.Services;
 
 namespace Workout_Log_Tracker_Trauner.Pages.Workouts
 {
     public class CreateModel : PageModel
     {
-        private readonly Workout_Log_Tracker_Trauner.Data.Workout_Log_Tracker_TraunerContext _context;
+        private readonly WorkoutService _workoutService;
 
-        public CreateModel(Workout_Log_Tracker_Trauner.Data.Workout_Log_Tracker_TraunerContext context)
+        public CreateModel(WorkoutService workoutService)
         {
-            _context = context;
+            _workoutService = workoutService;
         }
 
         public IActionResult OnGet()
@@ -35,9 +36,7 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
                 return Page();
             }
 
-            _context.Workout.Add(Workout);
-            await _context.SaveChangesAsync();
-
+            await _workoutService.AddWorkoutAsync(Workout);
             return RedirectToPage("./Index");
         }
     }
