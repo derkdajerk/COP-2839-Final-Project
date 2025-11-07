@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Workout_Log_Tracker_Trauner.Data;
 using Workout_Log_Tracker_Trauner.Models;
 
@@ -30,7 +31,7 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
                 return NotFound();
             }
 
-            var workout =  await _context.Workout.FirstOrDefaultAsync(m => m.Id == id);
+            var workout = await _context.Workout.FirstOrDefaultAsync(m => m.Id == id);
             if (workout == null)
             {
                 return NotFound();
@@ -45,6 +46,7 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
         {
             if (!ModelState.IsValid)
             {
+                TempData["ErrorMessage"] = "Error occured editing workout.";
                 return Page();
             }
 
@@ -58,6 +60,7 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
             {
                 if (!WorkoutExists(Workout.Id))
                 {
+                    TempData["ErrorMessage"] = "Error occured editing workout.";
                     return NotFound();
                 }
                 else
@@ -66,6 +69,7 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
                 }
             }
 
+            TempData["SuccessMessage"] = $"Workout '{Workout.Name}' edited successfully.";
             return RedirectToPage("./Index");
         }
 

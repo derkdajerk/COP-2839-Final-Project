@@ -33,10 +33,12 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
         {
             if (!ModelState.IsValid)
             {
+                TempData["ErrorMessage"] = "Error occured creating workout.";
                 return Page();
             }
 
             await _workoutService.AddWorkoutAsync(Workout);
+            TempData["SuccessMessage"] = $"Workout '{Workout.Name}' added successfully.";
             return RedirectToPage("./Index");
         }
     }

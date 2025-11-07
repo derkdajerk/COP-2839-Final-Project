@@ -39,3 +39,13 @@ To achieve this, I created a new `WorkoutService` class within the `Services` fo
 Next, I registered the `WorkoutService`  using the `Scoped` method in Program.cs. This ensures that a new instance of the service is created for each HTTP request, which is the recommended lifetime for services that interact with Entity Framework Core DbContexts. I then updated the relevant PageModel classes (`IndexModel`, `CreateModel`, and `DeleteModel`) to receive the `WorkoutService` via constructor injection.
 
 All data operations in these PageModels now delegate to the service, keeping the PageModels focused solely on handling HTTP requests and responses. This approach not only keeps the PageModels thin and clean but also makes unit testing much easier, as the service can be mocked or replaced as needed.
+
+## Week 12 - CRUD
+
+For Week 12, I focused on implementing full CRUD (Create, Read, Update, Delete) functionality for the Workout Log Tracker application. The goal was to allow users to manage their workout entries through a complete set of operations, while ensuring the application remains responsive and user-friendly.
+
+To achieve this, I utilized asynchronous data access throughout the service and page models. The `WorkoutService` class provides async methods such as `ToListAsync`, `GetWorkoutByIdAsync`, `AddWorkoutAsync`, and `DeleteWorkoutAsync`, all of which leverage Entity Framework Core’s async capabilities (`ToListAsync`, `FindAsync`, and `SaveChangesAsync`). These methods are called from the relevant PageModels, ensuring that all database operations are performed asynchronously for better scalability and performance.
+
+Validation feedback is integrated into the create and edit pages. The `Create.cshtml` view uses `<span asp-validation-for="...">` and `<div asp-validation-summary="ModelOnly">` to display validation errors directly to the user. In the `CreateModel` PageModel, the `OnPostAsync` method checks `ModelState.IsValid` before proceeding, and if validation fails, the page is returned with error messages displayed. This ensures users receive immediate feedback on any issues with their input.
+
+The application supports listing all workouts on the `Workouts\Index` page and allows users to add new workouts via the `Create` page. The application also supports editing and deleting workouts, providing a complete CRUD experience.

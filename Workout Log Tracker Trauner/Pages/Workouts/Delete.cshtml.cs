@@ -39,6 +39,7 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
         {
             if (id == null)
             {
+                TempData["ErrorMessage"] = "Error occured deleting workout.";
                 return NotFound();
             }
 
@@ -48,6 +49,7 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
                 await _workoutService.DeleteWorkoutAsync(workout);
             }
 
+            TempData["SuccessMessage"] = $"Workout '{workout.Name}' deleted successfully.";
             return RedirectToPage("./Index");
         }
     }
