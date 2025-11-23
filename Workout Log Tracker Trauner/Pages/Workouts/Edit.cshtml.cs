@@ -15,10 +15,12 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
     public class EditModel : PageModel
     {
         private readonly Workout_Log_Tracker_Trauner.Data.Workout_Log_Tracker_TraunerContext _context;
+        private readonly ILogger<EditModel> _logger;
 
-        public EditModel(Workout_Log_Tracker_Trauner.Data.Workout_Log_Tracker_TraunerContext context)
+        public EditModel(Workout_Log_Tracker_Trauner.Data.Workout_Log_Tracker_TraunerContext context, ILogger<EditModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -28,12 +30,14 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
         {
             if (id == null)
             {
+                _logger.LogError($"Workout ID is null.\nWorkout ID: {id}");
                 return NotFound();
             }
 
             var workout = await _context.Workout.FirstOrDefaultAsync(m => m.Id == id);
             if (workout == null)
             {
+                _logger.LogError($"Workout is null.\nWorkout ID: {id}");
                 return NotFound();
             }
             Workout = workout;
@@ -47,6 +51,7 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
             if (!ModelState.IsValid)
             {
                 TempData["ErrorMessage"] = "Error occured editing workout.";
+                _logger.LogError($"Error editing workout '{Workout.Name}' at {DateTime.Now}.\nWorkout ID: {Workout.Id}\nRequest ID: {HttpContext.TraceIdentifier}");
                 return Page();
             }
 
@@ -61,6 +66,7 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
                 if (!WorkoutExists(Workout.Id))
                 {
                     TempData["ErrorMessage"] = "Error occured editing workout.";
+                    _logger.LogError($"Error editing workout '{Workout.Name}' at {DateTime.Now}.\nWorkout ID: {Workout.Id}\nRequest ID: {HttpContext.TraceIdentifier}");
                     return NotFound();
                 }
                 else
@@ -70,6 +76,7 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
             }
 
             TempData["SuccessMessage"] = $"Workout '{Workout.Name}' edited successfully.";
+            _logger.LogInformation($"Successfully edited workout '{Workout.Name}' at {DateTime.Now}.\nWorkout ID: {Workout.Id}\nRequest ID: {HttpContext.TraceIdentifier}");
             return RedirectToPage("./Index");
         }
 

@@ -14,10 +14,12 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
     public class CreateModel : PageModel
     {
         private readonly WorkoutService _workoutService;
+        private readonly ILogger<CreateModel> _logger;
 
-        public CreateModel(WorkoutService workoutService)
+        public CreateModel(WorkoutService workoutService, ILogger<CreateModel> logger)
         {
             _workoutService = workoutService;
+            _logger = logger;
         }
 
         public IActionResult OnGet()
@@ -34,11 +36,13 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
             if (!ModelState.IsValid)
             {
                 TempData["ErrorMessage"] = "Error occured creating workout.";
+                _logger.LogError($"Error creating workout '{Workout.Name}' at {DateTime.Now}.\nWorkout ID: {Workout.Id}\nRequest ID: {HttpContext.TraceIdentifier}");
                 return Page();
             }
 
             await _workoutService.AddWorkoutAsync(Workout);
             TempData["SuccessMessage"] = $"Workout '{Workout.Name}' added successfully.";
+            _logger.LogInformation($"Successfully created workout '{Workout.Name}' at {DateTime.Now}.\nWorkout ID: {Workout.Id}\nRequest ID: {HttpContext.TraceIdentifier}");
             return RedirectToPage("./Index");
         }
     }

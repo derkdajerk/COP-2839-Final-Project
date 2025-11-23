@@ -5,6 +5,9 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Workout_Log_Tracker_Trauner.Data;
 using Workout_Log_Tracker_Trauner.Services;
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 // Add services to the container.
 builder.Services.AddRazorPages();

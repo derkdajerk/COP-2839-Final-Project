@@ -9,10 +9,12 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
     public class DeleteModel : PageModel
     {
         private readonly WorkoutService _workoutService;
+        private readonly ILogger<DeleteModel> _logger;
 
-        public DeleteModel(WorkoutService workoutService)
+        public DeleteModel(WorkoutService workoutService, ILogger<DeleteModel> logger)
         {
             _workoutService = workoutService;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -22,12 +24,14 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
         {
             if (id == null)
             {
+                _logger.LogError($"Workout ID is null.\nWorkout ID: {id}\nRequest ID: {HttpContext.TraceIdentifier}");
                 return NotFound();
             }
 
             var workout = await _workoutService.GetWorkoutByIdAsync(id.Value);
             if (workout == null)
             {
+                _logger.LogError($"Workout is null.\nWorkout ID: {id}\nRequest ID: {HttpContext.TraceIdentifier}");
                 return NotFound();
             }
 
@@ -40,6 +44,7 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
             if (id == null)
             {
                 TempData["ErrorMessage"] = "Error occured deleting workout.";
+                _logger.LogError($"Workout ID is null.\nWorkout ID: {id}\nRequest ID: {HttpContext.TraceIdentifier}");
                 return NotFound();
             }
 
@@ -50,6 +55,7 @@ namespace Workout_Log_Tracker_Trauner.Pages.Workouts
             }
 
             TempData["SuccessMessage"] = $"Workout '{workout.Name}' deleted successfully.";
+            _logger.LogInformation($"Successfully deleted workout '{workout.Name}' at {DateTime.Now}.\nWorkout ID: {workout.Id}\nRequest ID: {HttpContext.TraceIdentifier}");
             return RedirectToPage("./Index");
         }
     }
