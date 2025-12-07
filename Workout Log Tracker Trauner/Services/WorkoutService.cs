@@ -37,5 +37,11 @@ namespace Workout_Log_Tracker_Trauner.Services
             return await _context.Workout.ToListAsync();
         }
 
+        public async Task<List<WorkoutSummary>> GetWorkoutSummaryAsync()
+        {
+            return await _context.Set<WorkoutSummary>()
+                .FromSqlInterpolated($"EXEC sp_GetWorkoutSummary")
+                .ToListAsync();
+        }
     }
 }
