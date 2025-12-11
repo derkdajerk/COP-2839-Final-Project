@@ -71,3 +71,15 @@ For Week 15, I focused on implementing stored procedures for the Workout Log Tra
 The stored procedure executes a `GROUP BY` query on the `Workout` table, returning aggregated results ordered by workout frequency and recency. This approach is more efficient than performing aggregation logic in the application layer, as the database handles the computation directly. I then integrated the stored procedure into my `WorkoutService` class by implementing the `GetWorkoutSummaryAsync` method, which uses Entity Framework Core's `FromSqlInterpolated` to safely execute the procedure with parameterized queries, preventing SQL injection attacks.
 
 To display the results, I created a new `Summary` Razor Page (`Pages/Workouts/Summary.cshtml`) that calls the service method and renders the aggregated data. I also added a navigation link to the Summary page in the application's layout, making it easily accessible from anywhere in the app. The SQL script for the stored procedure has been committed to the repository in the `SQL` folder as evidence of the implementation.
+
+## Week 16 - Deployment
+
+For Week 16, I successfully deployed the Workout Log Tracker application to Microsoft Azure, demonstrating that the application can run in a real cloud environment. The deployment process involved creating an Azure App Service and Azure SQL Database on the free tier, making the application publicly accessible. I configured the application to use an `appsettings.Production.json` file that contains the Azure SQL connection string, ensuring that sensitive information is externalized and not hardcoded in the application source code.
+
+The deployment required several key steps: first, I created an Azure SQL Server and database with administrator credentials, then created the necessary database schema including the `Workout` table and `sp_GetWorkoutSummary` stored procedure. Next, I configured the App Service to use the production connection string via Application Settings, and finally published the application from Visual Studio to Azure.
+
+I verified the successful deployment by testing both critical endpoints: the `/healthz` health check endpoint returns JSON data confirming database connectivity and application health status, and the workouts index page displays the complete CRUD functionality. All features including creating, reading, updating, and deleting workouts, as well as viewing workout summaries via the stored procedure, function correctly in the cloud environment.
+
+This deployment demonstrates best practices for cloud-native applications, including secure credential management, proper environment configuration, and public accessibility. The application is now live and accessible via the Azure App Service URL.
+
+**Azure App Service URL:** https://workoutlogtrackertrauner20251211111507-a3c4ekaqhee8aufh.canadacentral-01.azurewebsites.net/
